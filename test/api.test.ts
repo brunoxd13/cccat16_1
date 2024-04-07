@@ -33,7 +33,7 @@ test("Não deve permitir criar uma passageiro com e-mail duplicado", async funct
 
 	expect(output2.data).not.toHaveProperty("accountId");
 	expect(output2.status).toBe(422);
-	expect(output2.data).toBe(-4);
+	expect(output2.data).toBe("Account already exists");
 });
 
 test("Não deve permitir criar uma passageiro com nome invalido", async function () {
@@ -48,7 +48,7 @@ test("Não deve permitir criar uma passageiro com nome invalido", async function
 
 	expect(output.data).not.toHaveProperty("accountId");
 	expect(output.status).toBe(422);
-	expect(output.data).toBe(-3);
+	expect(output.data).toBe("Invalid name");
 });
 
 test("Não deve permitir criar uma passageiro com email invalido", async function () {
@@ -63,7 +63,7 @@ test("Não deve permitir criar uma passageiro com email invalido", async functio
 
 	expect(output.data).not.toHaveProperty("accountId");
 	expect(output.status).toBe(422);
-	expect(output.data).toBe(-2);
+	expect(output.data).toBe("Invalid email");
 });
 
 test("Não deve permitir criar uma passageiro com CPF invalido", async function () {
@@ -78,7 +78,7 @@ test("Não deve permitir criar uma passageiro com CPF invalido", async function 
 
 	expect(output.data).not.toHaveProperty("accountId");
 	expect(output.status).toBe(422);
-	expect(output.data).toBe(-1);
+	expect(output.data).toBe("Invalid CPF");
 });
 
 test("Não deve permitir criar uma motorista com placa invalida", async function () {
@@ -94,6 +94,6 @@ test("Não deve permitir criar uma motorista com placa invalida", async function
 
 	expect(output.data).not.toHaveProperty("accountId");
 	expect(output.status).toBe(422);
-	expect(output.data).toBe(-5);
+	expect(output.data).toBe("Invalid car plate");
 });
 

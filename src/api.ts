@@ -8,21 +8,14 @@ app.use(express.json());
 app.post("/signup", async function (req, res) {
   const { name, email, cpf, carPlate, isPassenger, isDriver } = req.body;
 
-  if (await validateAccountExists(email)) return res.status(422).send("-4");
-  if (!validateName(name)) return res.status(422).send("-3");
-  if (!validateEmail(email)) return res.status(422).send("-2");
-  if (!validateCpf(cpf)) return res.status(422).send("-1");
-  if (!!isDriver && !validateCarPlate(carPlate))
-    return res.status(422).send("-5");
+  if (await validateAccountExists(email)) return res.status(422).send("Account already exists");
+  if (!validateName(name)) return res.status(422).send("Invalid name");
+  if (!validateEmail(email)) return res.status(422).send("Invalid email");
+  if (!validateCpf(cpf)) return res.status(422).send("Invalid CPF");
+  if (!!isDriver && !validateCarPlate(carPlate)) return res.status(422).send("Invalid car plate");
 
-  const id = await createAccount(
-    name,
-    email,
-    cpf,
-    carPlate,
-    isPassenger,
-    isDriver
-  );
+  const id = await createAccount(name, email, cpf, carPlate, isPassenger, isDriver);
+	
   return res.json({
     accountId: id,
   });
