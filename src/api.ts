@@ -1,13 +1,14 @@
+import { Request, Response, NextFunction } from 'express';
 import crypto from "crypto";
 import express from "express";
 import pgp from "pg-promise";
+
 import { validate as validateCpf } from "./validateCpf";
+
 const app = express();
 app.use(express.json());
 
 const DATABASE_URL = process.env.DATABASE_URL || "postgres://postgres:123456@localhost:5432/app";
-
-import { Request, Response, NextFunction } from 'express';
 
 const validateSignup = (req: Request, res: Response, next: NextFunction) => {
 	const { name, email, cpf, carPlate, isDriver } = req.body;
