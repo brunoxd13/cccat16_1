@@ -5,24 +5,32 @@ import { validate as validateCpf } from "./validateCpf";
 const app = express();
 app.use(express.json());
 
-app.post("/signup", async function (req, res) {
+const DATABASE_URL = process.env.DATABASE_URL || "postgres://postgres:123456@localhost:5432/app";
+
+import { Request, Response, NextFunction } from 'express';
+
+const validateSignup = (req: Request, res: Response, next: NextFunction) => {
+	const { name, email, cpf, carPlate, isDriver } = req.body;
+
+	if (!validateName(name)) return res.status(422).send("Invalid name");
+	if (!validateEmail(email)) return res.status(422).send("Invalid email");
+	if (!validateCpf(cpf)) return res.status(422).send("Invalid CPF");
+	if (!!isDriver && !validateCarPlate(carPlate)) return res.status(422).send("Invalid car plate");
+
+	next();
+}
+
+app.post("/signup", validateSignup, async (req: Request, res: Response) => {
   const { name, email, cpf, carPlate, isPassenger, isDriver } = req.body;
-
-  if (await validateAccountExists(email)) return res.status(422).send("Account already exists");
-  if (!validateName(name)) return res.status(422).send("Invalid name");
-  if (!validateEmail(email)) return res.status(422).send("Invalid email");
-  if (!validateCpf(cpf)) return res.status(422).send("Invalid CPF");
-  if (!!isDriver && !validateCarPlate(carPlate)) return res.status(422).send("Invalid car plate");
-
-  const id = await createAccount(name, email, cpf, carPlate, isPassenger, isDriver);
 	
-  return res.json({
-    accountId: id,
-  });
+	if (await validateAccountExists(email)) return res.status(422).send("Account already exists");
+
+	const id = await createAccount(name, email, cpf, carPlate, isPassenger, isDriver);
+	return res.json({ accountId: id });
 });
 
 const validateAccountExists = async (email: string) => {
-  const connection = pgp()("postgres://postgres:123456@localhost:5432/app");
+  const connection = pgp()(DATABASE_URL);
   try {
     const [acc] = await connection.query(
       "select * from cccat16.account where email = $1",
@@ -54,7 +62,7 @@ const createAccount = async (
   isPassenger: boolean,
   isDriver: boolean
 ) => {
-  const connection = pgp()("postgres://postgres:123456@localhost:5432/app");
+  const connection = pgp()(DATABASE_URL);
   try {
     const id = crypto.randomUUID();
     await connection.query(
