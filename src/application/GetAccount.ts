@@ -1,12 +1,12 @@
-import { AccountDAO } from "../resource/AccountDAO";
+import { AccountRepository } from "../resource/AccountRepository";
 
 export class GetAccount{
-  constructor(readonly accountDAO : AccountDAO){
+  constructor(readonly accountRepository : AccountRepository){
 
   }
 
   async execute(input: any) {
-    const account = await this.accountDAO.getAccountById(input.accountId);
+    const account = await this.accountRepository.getAccountById(input.accountId);
     return account;
   }
 }

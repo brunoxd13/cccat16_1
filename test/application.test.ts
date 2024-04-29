@@ -1,13 +1,13 @@
 import { Signup } from "../src/application/Signup";
-import { AccountDAOMemory } from "../src/resource/AccountDAO";
+import { AccountRepositoryMemory } from "../src/resource/AccountRepository";
 import { MailerGatewayMemory } from "../src/resource/MailerGateway";
 
 let signup: Signup;
 
 beforeEach(() => {
-	const accountDAO = new AccountDAOMemory()
+	const accountRepository = new AccountRepositoryMemory()
 	const mailerGateway = new MailerGatewayMemory();
-	signup = new Signup(accountDAO, mailerGateway);
+	signup = new Signup(accountRepository, mailerGateway);
 });
 
 test("Deve criar uma conta para o passageiro", async function () {
@@ -65,7 +65,7 @@ test("Não deve permitir criar uma passageiro com CPF invalido", async function 
 		isPassenger: true
 	};
 
-	await expect(() => signup.execute(input)).rejects.toThrow(new Error("Invalid CPF"));
+	await expect(() => signup.execute(input)).rejects.toThrow(new Error("Invalid cpf"));
 });
 
 test("Não deve permitir criar uma motorista com placa invalida", async function () {

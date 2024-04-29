@@ -78,7 +78,7 @@ test("Não deve permitir criar uma passageiro com CPF invalido", async function 
 
 	expect(output.data).not.toHaveProperty("accountId");
 	expect(output.status).toBe(422);
-	expect(output.data.message).toBe("Invalid CPF");
+	expect(output.data.message).toBe("Invalid cpf");
 });
 
 test("Não deve permitir criar uma motorista com placa invalida", async function () {
