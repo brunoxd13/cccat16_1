@@ -1,21 +1,77 @@
-import { validate } from "./validateCpf";
+import CarPlate from "./CarPlate";
+import Cpf from "./Cpf";
+import Email from "./Email";
+import Name from "./Name";
 import crypto from "crypto";
 
 export default class Account {
+  private constructor(
+    readonly accountId: string,
+    private name: Name,
+    private email: Email,
+    private cpf: Cpf,
+    private carPlate: CarPlate,
+    readonly isPassenger: boolean,
+    readonly isDriver: boolean
+  ) {}
 
-	private constructor (readonly accountId: string, readonly name: string, readonly email: string, readonly cpf: string, readonly carPlate: string, readonly isPassenger: boolean, readonly isDriver: boolean) {
-		if (!this.name.match(/[a-zA-Z] [a-zA-Z]+/)) throw new Error("Invalid name");
-		if (!this.email.match(/^(.+)@(.+)$/)) throw new Error("Invalid email");
-		if (!validate(this.cpf)) throw new Error("Invalid cpf");
-		if (this.isDriver && this.carPlate && !this.carPlate.match(/[A-Z]{3}[0-9]{4}/)) throw new Error("Invalid car plate");
-	}
+  static create(
+    name: string,
+    email: string,
+    cpf: string,
+    carPlate: string,
+    isPassenger: boolean,
+    isDriver: boolean
+  ) {
+    const accountId = crypto.randomUUID();
+    return new Account(
+      accountId,
+      new Name(name),
+      new Email(email),
+      new Cpf(cpf),
+      new CarPlate(carPlate),
+      isPassenger,
+      isDriver
+    );
+  }
 
-	static create (name: string, email: string, cpf: string, carPlate: string, isPassenger: boolean, isDriver: boolean) {
-		const accountId = crypto.randomUUID();
-		return new Account(accountId, name, email, cpf, carPlate, isPassenger, isDriver);
-	}
+  static restore(
+    accountId: string,
+    name: string,
+    email: string,
+    cpf: string,
+    carPlate: string,
+    isPassenger: boolean,
+    isDriver: boolean
+  ) {
+    return new Account(
+      accountId,
+      new Name(name),
+      new Email(email),
+      new Cpf(cpf),
+      new CarPlate(carPlate),
+      isPassenger,
+      isDriver
+    );
+  }
 
-	static restore (accountId: string, name: string, email: string, cpf: string, carPlate: string, isPassenger: boolean, isDriver: boolean) {
-		return new Account(accountId, name, email, cpf, carPlate, isPassenger, isDriver);
-	}
+  setName(name: string) {
+    this.name = new Name(name);
+  }
+
+  getName(): string {
+    return this.name.getValue();
+  }
+
+  getEmail(): string {
+    return this.email.getValue();
+  }
+
+  getCpf(): string {
+    return this.cpf.getValue();
+  }
+
+  getCarPlate(): string {
+    return this.carPlate.getValue();
+  }
 }

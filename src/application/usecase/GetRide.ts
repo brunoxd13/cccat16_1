@@ -16,8 +16,8 @@ export default class GetRide {
       toLat: ride.toLat,
       toLong: ride.toLong,
       status: ride.status,
-      passangerName: passanger.name,
-      passangerEmail: passanger.email
+      passangerName: passanger.getName(),
+      passangerEmail: passanger.getEmail()
     }
 
   }

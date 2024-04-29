@@ -1,4 +1,3 @@
-import pgp from "pg-promise";
 import Account from "../../domain/Account";
 import DatabaseConnection from "../database/DatabaseConnection";
 
@@ -46,11 +45,9 @@ export class AccountRepositoryDatabase implements AccountRepository {
   }
 
   async saveAccount(account: Account) {
-    const { accountId, name, email, cpf, carPlate, isPassenger, isDriver } =
-      account;
     await this.databaseConnection.query(
       "insert into cccat16.account (account_id, name, email, cpf, car_plate, is_passenger, is_driver) values ($1, $2, $3, $4, $5, $6, $7)",
-      [accountId, name, email, cpf, carPlate, !!isPassenger, !!isDriver]
+      [account.accountId, account.getName(), account.getEmail(), account.getCpf(), account.getCarPlate(), !!account.isPassenger, !!account.isDriver]
     );
   }
 }
@@ -59,7 +56,7 @@ export class AccountRepositoryMemory implements AccountRepository {
   private accounts: any[] = [];
 
   async getAccountByEmail(email: string) {
-    return this.accounts.find((acc) => acc.email === email);
+    return this.accounts.find((acc: Account) => acc.getEmail() === email);
   }
 
   async getAccountById(accountId: string) {

@@ -5,8 +5,26 @@ export class GetAccount{
 
   }
 
-  async execute(input: any) {
+  async execute(input: any) : Promise<Output> {
     const account = await this.accountRepository.getAccountById(input.accountId);
-    return account;
+    return {
+      accountId: account.accountId,
+      name: account.getName(),
+      email: account.getEmail(),
+      cpf: account.getCpf(),
+      carPlate: account.getCarPlate(),
+      isPassenger: account.isPassenger,
+      isDriver: account.isDriver
+    };
   }
+}
+
+type Output = {
+  accountId: string;
+  name: string;
+  email: string;
+  cpf: string;
+  carPlate: string;
+  isPassenger: boolean;
+  isDriver: boolean;
 }

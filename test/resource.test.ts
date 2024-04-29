@@ -12,9 +12,9 @@ test("Deve salvar um registro na tabela account e consultar por id", async funct
 
 	const accountById = await accountDAO.getAccountById(account.accountId);
 	expect(accountById.accountId).toBe(account.accountId);
-	expect(accountById.name).toBe(account.name);
-	expect(accountById.email).toBe(account.email);
-	expect(accountById.cpf).toBe(account.cpf);
+	expect(accountById.getName()).toBe(account.getName());
+	expect(accountById.getEmail()).toBe(account.getEmail());
+	expect(accountById.getCpf()).toBe(account.getCpf());
 });
 
 test("Deve salvar um registro na tabela account e consultar por email", async function () {
@@ -24,9 +24,9 @@ test("Deve salvar um registro na tabela account e consultar por email", async fu
 	const accountDAO = new AccountRepositoryDatabase(connection);
 
 	await accountDAO.saveAccount(account);
-	const accountByEmail = await accountDAO.getAccountByEmail(account.email);
+	const accountByEmail = await accountDAO.getAccountByEmail(account.getEmail());
 	expect(accountByEmail?.accountId).toBe(account.accountId);
-	expect(accountByEmail?.name).toBe(account.name);
-	expect(accountByEmail?.email).toBe(account.email);
-	expect(accountByEmail?.cpf).toBe(account.cpf);
+	expect(accountByEmail?.getName()).toBe(account.getName());
+	expect(accountByEmail?.getEmail()).toBe(account.getEmail());
+	expect(accountByEmail?.getCpf()).toBe(account.getCpf());
 });
