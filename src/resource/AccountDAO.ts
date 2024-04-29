@@ -47,5 +47,23 @@ export class AccountDAODatabase implements AccountDAO {
   }
 }
 
+export class AccountDAOMemory implements AccountDAO {
+  private accounts: any[] = [];
+
+  async getAccountByEmail(email: string) {
+    return this.accounts.find((acc) => acc.email === email);
+  }
+
+  async getAccountById(accountId: string) {
+    return this.accounts.find((acc) => acc.accountId === accountId);
+  }
+
+  async saveAccount(account: any) {
+    const id = crypto.randomUUID();
+    this.accounts.push({ ...account, accountId: id });
+    return id;
+  }
+}
+
 
 

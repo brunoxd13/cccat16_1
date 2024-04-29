@@ -1,11 +1,13 @@
-import { Signup } from "../src/application";
-import { AccountDAODatabase } from "../src/resources";
+import { Signup } from "../src/application/Signup";
+import { AccountDAOMemory } from "../src/resource/AccountDAO";
+import { MailerGatewayMemory } from "../src/resource/MailerGateway";
 
 let signup: Signup;
 
 beforeEach(() => {
-	const accountDAO = new AccountDAODatabase();
-	signup = new Signup(accountDAO);
+	const accountDAO = new AccountDAOMemory()
+	const mailerGateway = new MailerGatewayMemory();
+	signup = new Signup(accountDAO, mailerGateway);
 });
 
 test("Deve criar uma conta para o passageiro", async function () {
