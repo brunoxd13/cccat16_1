@@ -1,8 +1,9 @@
 import { validate as validateCpf } from "./validateCpf";
-import { AccountDAO } from "./resources";
+import { AccountDAO } from "../resource/AccountDAO";
+import { MailerGateway } from "../resource/MailerGateway";
 
 export class Signup {
-  constructor(readonly accountDAO : AccountDAO){
+  constructor(readonly accountDAO : AccountDAO, readonly mailerGateway: MailerGateway){
 
   }
 
@@ -16,19 +17,9 @@ export class Signup {
     if (!!isDriver && !validateCarPlate(carPlate)) throw new Error("Invalid car plate");
 
     const id = await this.accountDAO.saveAccount(input);
+    this.mailerGateway.send(email, "Welcome!", "");
+
     return { accountId: id }
-  }
-
-}
-
-export class GetAccount{
-  constructor(readonly accountDAO : AccountDAO){
-
-  }
-
-  async execute(input: any) {
-    const account = await this.accountDAO.getAccountById(input.accountId);
-    return account;
   }
 
 }
