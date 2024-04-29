@@ -1,22 +1,36 @@
 import { validate as validateCpf } from "./validateCpf";
-import { getAccountByEmail, getAccountById, createAccount } from "./resources";
+import { AccountDAO } from "./resources";
 
-export async function signUp (input: any) {
-  const { name, email, cpf, carPlate, isDriver } = input;
+export class Signup {
+  constructor(readonly accountDAO : AccountDAO){
 
-	if (await getAccountByEmail(email)) throw new Error("Account already exists");
-  if (!validateName(name)) throw new Error("Invalid name");
-	if (!validateEmail(email)) throw new Error("Invalid email");
-	if (!validateCpf(cpf)) throw new Error("Invalid CPF");
-	if (!!isDriver && !validateCarPlate(carPlate)) throw new Error("Invalid car plate");
+  }
 
-	const id = await createAccount(input);
-	return { accountId: id }
+  async execute(input: any) {
+    const { name, email, cpf, carPlate, isDriver } = input;
+
+    if (await this.accountDAO.getAccountByEmail(email)) throw new Error("Account already exists");
+    if (!validateName(name)) throw new Error("Invalid name");
+    if (!validateEmail(email)) throw new Error("Invalid email");
+    if (!validateCpf(cpf)) throw new Error("Invalid CPF");
+    if (!!isDriver && !validateCarPlate(carPlate)) throw new Error("Invalid car plate");
+
+    const id = await this.accountDAO.saveAccount(input);
+    return { accountId: id }
+  }
+
 }
 
-export async function getAccount(input: any) {
-  const { account_id } = input.body;
-  return getAccountById(account_id);
+export class GetAccount{
+  constructor(readonly accountDAO : AccountDAO){
+
+  }
+
+  async execute(input: any) {
+    const account = await this.accountDAO.getAccountById(input.accountId);
+    return account;
+  }
+
 }
 
 const validateName = (name: string) => {
