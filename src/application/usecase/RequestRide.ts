@@ -1,7 +1,7 @@
-import { AccountRepository } from "../resource/AccountRepository";
+import { AccountRepository } from "../../infrastructure/repository/AccountRepository";
 import crypto from "crypto";
-import RideDAO from "../resource/RideRepository";
-import Ride from "./Ride";
+import RideDAO from "../../infrastructure/repository/RideRepository";
+import Ride from "../domain/Ride";
 
 export class GetAccount {
   constructor(readonly accountRepository: AccountRepository, readonly rideDAO: RideDAO) {}

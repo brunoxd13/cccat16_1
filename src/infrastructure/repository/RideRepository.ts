@@ -1,6 +1,6 @@
 import crypto from "crypto";
 import pgp from "pg-promise";
-import Ride from "../application/Ride";
+import Ride from "../../domain/Ride";
 
 const DATABASE_URL =
   process.env.DATABASE_URL || "postgres://postgres:123456@localhost:5432/app";

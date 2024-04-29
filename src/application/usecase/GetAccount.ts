@@ -1,4 +1,4 @@
-import { AccountRepository } from "../resource/AccountRepository";
+import { AccountRepository } from "../../infrastructure/repository/AccountRepository";
 
 export class GetAccount{
   constructor(readonly accountRepository : AccountRepository){

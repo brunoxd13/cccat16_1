@@ -1,5 +1,5 @@
 import pgp from "pg-promise";
-import Account from "../application/Account";
+import Account from "../../domain/Account";
 
 const DATABASE_URL =
   process.env.DATABASE_URL || "postgres://postgres:123456@localhost:5432/app";

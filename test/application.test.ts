@@ -1,6 +1,6 @@
-import { Signup } from "../src/application/Signup";
-import { AccountRepositoryMemory } from "../src/resource/AccountRepository";
-import { MailerGatewayMemory } from "../src/resource/MailerGateway";
+import { Signup } from "../src/application/usecase/Signup";
+import { AccountRepositoryMemory } from "../src/infrastructure/repository/AccountRepository";
+import { MailerGatewayMemory } from "../src/infrastructure/gateway/MailerGateway";
 
 let signup: Signup;
 

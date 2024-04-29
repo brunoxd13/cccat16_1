@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import express from "express";
-import { Signup } from '../application/Signup';
-import { AccountRepositoryDatabase } from '../resource/AccountRepository';
-import { MailerGatewayMemory } from '../resource/MailerGateway';
+import { Signup } from './application/usecase/Signup';
+import { AccountRepositoryDatabase } from './infrastructure/repository/AccountRepository';
+import { MailerGatewayMemory } from './infrastructure/gateway/MailerGateway';
 
 const app = express();
 app.use(express.json());

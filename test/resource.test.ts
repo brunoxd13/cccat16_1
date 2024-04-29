@@ -1,6 +1,5 @@
-import crypto from "crypto";
-import { AccountRepositoryDatabase } from "../src/resource/AccountRepository";
-import Account from "../src/application/Account";
+import { AccountRepositoryDatabase } from "../src/infrastructure/repository/AccountRepository";
+import Account from "../src/domain/Account";
 
 // Integration Test
 
