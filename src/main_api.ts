@@ -1,26 +1,19 @@
-import { Request, Response } from 'express';
-import express from "express";
-import { Signup } from './application/usecase/Signup';
-import { AccountRepositoryDatabase } from './infrastructure/repository/AccountRepository';
-import { MailerGatewayMemory } from './infrastructure/gateway/MailerGateway';
+// main
 
-const app = express();
-app.use(express.json());
+import { AccountRepositoryDatabase } from "./infrastructure/repository/AccountRepository";
+import { Signup } from "./application/usecase/Signup";
+import { GetAccount } from "./application/usecase/GetAccount";
+import { MailerGatewayMemory } from "./infrastructure/gateway/MailerGateway";
+import { PgPromiseAdapter } from "./infrastructure/database/DatabaseConnection";
+import { ExpressAdapter, HapiAdapter } from "./infrastructure/http/HttpServer";
+import AccountController from "./infrastructure/http/AccountController";
 
-
-app.post("/signup", async (req: Request, res: Response) => {
-  try {
-    const accountRepository = new AccountRepositoryDatabase();
-    const mailerGateway = new MailerGatewayMemory();
-
-    const signup = new Signup(accountRepository, mailerGateway);
-    const output = await signup.execute(req.body);
-    res.json(output);
-  } catch (error: any) {
-    res.status(422).json({
-      message: error.message
-    });
-  }
-});
-
-app.listen(3000);
+const httpServer = new ExpressAdapter();
+// const httpServer = new HapiAdapter();
+const connection = new PgPromiseAdapter();
+const accountRepository = new AccountRepositoryDatabase(connection);
+const mailerGateway = new MailerGatewayMemory();
+const signup = new Signup(accountRepository, mailerGateway);
+const getAccount = new GetAccount(accountRepository);
+new AccountController(httpServer, signup, getAccount);
+httpServer.listen(3000);
