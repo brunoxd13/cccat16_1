@@ -1,7 +1,6 @@
 import { AccountRepository } from "../../infrastructure/repository/AccountRepository";
-import crypto from "crypto";
 import RideDAO from "../../infrastructure/repository/RideRepository";
-import Ride from "../domain/Ride";
+import Ride from "../../domain/Ride";
 
 export class GetAccount {
   constructor(readonly accountRepository: AccountRepository, readonly rideDAO: RideDAO) {}
@@ -23,10 +22,10 @@ export class GetAccount {
       input.toLong
     );
 
-    const rideId = await this.rideDAO.saveRide(ride);
+    await this.rideDAO.saveRide(ride);
 
     return {
-      rideId: rideId,
+      rideId: ride.rideId,
     };
   }
 }

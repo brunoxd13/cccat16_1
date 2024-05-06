@@ -53,14 +53,14 @@ export class AccountRepositoryDatabase implements AccountRepository {
 }
 
 export class AccountRepositoryMemory implements AccountRepository {
-  private accounts: any[] = [];
+  private accounts: Account[] = [];
 
-  async getAccountByEmail(email: string) {
+  async getAccountByEmail(email: string) : Promise<any>{
     return this.accounts.find((acc: Account) => acc.getEmail() === email);
   }
 
-  async getAccountById(accountId: string) {
-    return this.accounts.find((acc) => acc.accountId === accountId);
+  async getAccountById(accountId: string) : Promise<any> {
+    return this.accounts.find((acc : Account) => acc.accountId === accountId);
   }
 
   async saveAccount(account: Account): Promise<void> {

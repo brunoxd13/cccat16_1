@@ -11,8 +11,7 @@ export class RideRideRepositoryDatabase implements RideRepository {
   constructor(readonly databaseConnection: DatabaseConnection) {}
 
   async saveRide(ride: Ride): Promise<void> {
-    const { rideId, passengerId, fromLat, fromLong, toLat, toLong, status, date } =
-      ride;
+    const { rideId, passengerId, fromLat, fromLong, toLat, toLong, status, date } = ride;
     await this.databaseConnection.query(
       "insert into cccat16.ride (ride_id, passenger_id, from_lat, from_long, to_lat, to_long, status, date) values ($1, $2, $3, $4, $5, $6, $7, $8)",
       [rideId, passengerId, fromLat, fromLong, toLat, toLong, status, date]

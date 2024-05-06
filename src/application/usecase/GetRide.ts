@@ -11,13 +11,13 @@ export default class GetRide {
     return {
       rideId: ride.rideId,
       passengerId: ride.passengerId,
-      fromLat: ride.fromLat,
-      fromLong: ride.fromLong,
-      toLat: ride.toLat,
-      toLong: ride.toLong,
+      fromLat: ride.getFromLat(),
+      fromLong: ride.getFromLong(),
+      toLat: ride.getToLat(),
+      toLong: ride.getToLong(),
       status: ride.status,
-      passangerName: passanger.getName(),
-      passangerEmail: passanger.getEmail()
+      passangerName: passanger?.getName(),
+      passangerEmail: passanger?.getEmail()
     }
 
   }
