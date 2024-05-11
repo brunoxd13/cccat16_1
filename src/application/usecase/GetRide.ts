@@ -2,11 +2,16 @@ import { AccountRepository } from "../../infrastructure/repository/AccountReposi
 import RideRepository from "../../infrastructure/repository/RideRepository";
 
 export default class GetRide {
-  constructor(readonly accountRepository: AccountRepository, readonly rideRepository: RideRepository){}
+  constructor(
+    readonly accountRepository: AccountRepository,
+    readonly rideRepository: RideRepository,
+  ) {}
 
   async execute(input: Input): Promise<Output> {
     const ride = await this.rideRepository.getRideById(input.rideId);
-    const passanger = await this.accountRepository.getAccountById(ride.passengerId);
+    const passanger = await this.accountRepository.getAccountById(
+      ride.passengerId,
+    );
 
     return {
       rideId: ride.rideId,
@@ -16,10 +21,9 @@ export default class GetRide {
       toLat: ride.getToLat(),
       toLong: ride.getToLong(),
       status: ride.status,
-      passangerName: passanger?.getName(),
-      passangerEmail: passanger?.getEmail()
-    }
-
+      passengerName: passanger?.getName(),
+      passengerEmail: passanger?.getEmail(),
+    };
   }
 }
 
@@ -35,6 +39,6 @@ type Output = {
   toLat: number;
   toLong: number;
   status: string;
-  passangerName: string;
-  passangerEmail: string;
-}
+  passengerName: string;
+  passengerEmail: string;
+};

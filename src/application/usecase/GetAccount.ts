@@ -1,12 +1,11 @@
 import { AccountRepository } from "../../infrastructure/repository/AccountRepository";
 
-export class GetAccount{
-  constructor(readonly accountRepository : AccountRepository){
+export default class GetAccount {
+  constructor(readonly accountRepository: AccountRepository) {}
 
-  }
-
-  async execute(input: any) : Promise<Output> {
+  async execute(input: any): Promise<Output> {
     const account = await this.accountRepository.getAccountById(input.accountId);
+    
     return {
       accountId: account.accountId,
       name: account.getName(),
@@ -14,7 +13,7 @@ export class GetAccount{
       cpf: account.getCpf(),
       carPlate: account.getCarPlate(),
       isPassenger: account.isPassenger,
-      isDriver: account.isDriver
+      isDriver: account.isDriver,
     };
   }
 }
@@ -27,4 +26,4 @@ type Output = {
   carPlate: string;
   isPassenger: boolean;
   isDriver: boolean;
-}
+};

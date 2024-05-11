@@ -1,7 +1,7 @@
 // interface adapter
 
-import { GetAccount } from "../../application/usecase/GetAccount";
-import { Signup } from "../../application/usecase/Signup";
+import GetAccount from "../../application/usecase/GetAccount";
+import Signup from "../../application/usecase/Signup";
 import HttpServer from "./HttpServer";
 
 export default class AccountController {

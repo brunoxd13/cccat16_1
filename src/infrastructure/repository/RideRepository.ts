@@ -4,17 +4,17 @@ import DatabaseConnection from "../database/DatabaseConnection";
 export default interface RideRepository {
   saveRide(ride: Ride): Promise<void>;
   getRideById(rideId: string): Promise<Ride>;
-  hasActiveRideByPassangerId(passangerId: string): Promise<boolean>;
+  hasActiveRideByPassengerId(passangerId: string): Promise<boolean>;
 }
 
-export class RideRideRepositoryDatabase implements RideRepository {
+export class RideRepositoryDatabase implements RideRepository {
   constructor(readonly databaseConnection: DatabaseConnection) {}
 
   async saveRide(ride: Ride): Promise<void> {
-    const { rideId, passengerId, fromLat, fromLong, toLat, toLong, status, date } = ride;
+    const { rideId, passengerId, status, date } = ride;
     await this.databaseConnection.query(
       "insert into cccat16.ride (ride_id, passenger_id, from_lat, from_long, to_lat, to_long, status, date) values ($1, $2, $3, $4, $5, $6, $7, $8)",
-      [rideId, passengerId, fromLat, fromLong, toLat, toLong, status, date]
+      [rideId, passengerId, ride.getFromLat(), ride.getFromLong(), ride.getToLat(), ride.getToLong(), status, date]
     );
   }
 
@@ -35,7 +35,7 @@ export class RideRideRepositoryDatabase implements RideRepository {
     );
   }
 
-  async hasActiveRideByPassangerId(passangerId: string): Promise<boolean> {
+  async hasActiveRideByPassengerId(passangerId: string): Promise<boolean> {
     const [rideData] = await this.databaseConnection.query(
       "select * from cccat16.ride where passenger_id  = $1 and status <> 'completed'",
       [passangerId]
@@ -43,3 +43,4 @@ export class RideRideRepositoryDatabase implements RideRepository {
     return !!rideData;
   }
 }
+

@@ -2,24 +2,33 @@ import { AccountRepository } from "../../infrastructure/repository/AccountReposi
 import RideDAO from "../../infrastructure/repository/RideRepository";
 import Ride from "../../domain/Ride";
 
-export class GetAccount {
-  constructor(readonly accountRepository: AccountRepository, readonly rideDAO: RideDAO) {}
+export default class RequestRide {
+  constructor(
+    readonly accountRepository: AccountRepository,
+    readonly rideDAO: RideDAO,
+  ) {}
 
   async execute(input: Input): Promise<Output> {
-    const account = await this.accountRepository.getAccountById(input.passengerId);
-    if (!account.isPassenger) throw new Error("Account is not a passanger");
-
-    const hasActiveRide = await this.rideDAO.hasActiveRideByPassangerId(
-      input.passengerId
+    const account = await this.accountRepository.getAccountById(
+      input.passengerId,
     );
-    if (hasActiveRide) throw new Error("Passanger has an active ride");
+
+    if (!account.isPassenger) throw new Error("Account is not from a passenger");
+
+    const hasActiveRide = await this.rideDAO.hasActiveRideByPassengerId(
+      input.passengerId,
+    );
+
+    if (hasActiveRide) {
+      throw new Error("Passenger has an active ride");
+    }
 
     const ride = Ride.create(
       input.passengerId,
       input.fromLat,
       input.fromLong,
       input.toLat,
-      input.toLong
+      input.toLong,
     );
 
     await this.rideDAO.saveRide(ride);

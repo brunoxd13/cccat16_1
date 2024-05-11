@@ -1,4 +1,4 @@
-import { Signup } from "../src/application/usecase/Signup";
+import Signup from "../src/application/usecase/Signup";
 import { AccountRepositoryMemory } from "../src/infrastructure/repository/AccountRepository";
 import { MailerGatewayMemory } from "../src/infrastructure/gateway/MailerGateway";
 

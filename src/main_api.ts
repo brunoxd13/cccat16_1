@@ -1,8 +1,8 @@
 // main
 
 import { AccountRepositoryDatabase } from "./infrastructure/repository/AccountRepository";
-import { Signup } from "./application/usecase/Signup";
-import { GetAccount } from "./application/usecase/GetAccount";
+import Signup from "./application/usecase/Signup";
+import GetAccount from "./application/usecase/GetAccount";
 import { MailerGatewayMemory } from "./infrastructure/gateway/MailerGateway";
 import { PgPromiseAdapter } from "./infrastructure/database/DatabaseConnection";
 import { ExpressAdapter, HapiAdapter } from "./infrastructure/http/HttpServer";
