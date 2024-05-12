@@ -12,6 +12,10 @@ export default class GetRide {
     const passanger = await this.accountRepository.getAccountById(
       ride.passengerId,
     );
+    let driver;
+    if (ride.driverId) {
+      driver = await this.accountRepository.getAccountById(ride.driverId);
+    }
 
     return {
       rideId: ride.rideId,
@@ -20,9 +24,11 @@ export default class GetRide {
       fromLong: ride.getFromLong(),
       toLat: ride.getToLat(),
       toLong: ride.getToLong(),
-      status: ride.status,
+      status: ride.getStatus(),
       passengerName: passanger?.getName(),
       passengerEmail: passanger?.getEmail(),
+      driverName: driver?.getName(),
+      driverEmail: driver?.getEmail(),
     };
   }
 }
@@ -41,4 +47,6 @@ type Output = {
   status: string;
   passengerName: string;
   passengerEmail: string;
+  driverName?: string;
+  driverEmail?: string;
 };

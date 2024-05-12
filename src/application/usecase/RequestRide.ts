@@ -1,11 +1,11 @@
 import { AccountRepository } from "../../infrastructure/repository/AccountRepository";
-import RideDAO from "../../infrastructure/repository/RideRepository";
+import RideRepository from "../../infrastructure/repository/RideRepository";
 import Ride from "../../domain/Ride";
 
 export default class RequestRide {
   constructor(
     readonly accountRepository: AccountRepository,
-    readonly rideDAO: RideDAO,
+    readonly rideRepository: RideRepository,
   ) {}
 
   async execute(input: Input): Promise<Output> {
@@ -15,7 +15,7 @@ export default class RequestRide {
 
     if (!account.isPassenger) throw new Error("Account is not from a passenger");
 
-    const hasActiveRide = await this.rideDAO.hasActiveRideByPassengerId(
+    const hasActiveRide = await this.rideRepository.hasActiveRideByPassengerId(
       input.passengerId,
     );
 
@@ -31,7 +31,7 @@ export default class RequestRide {
       input.toLong,
     );
 
-    await this.rideDAO.saveRide(ride);
+    await this.rideRepository.saveRide(ride);
 
     return {
       rideId: ride.rideId,

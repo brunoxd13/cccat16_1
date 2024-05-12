@@ -6,8 +6,9 @@ export default class Ride {
   private constructor(
     readonly rideId: string,
     readonly passengerId: string,
+    public driverId: string,
     private segment: Segment,
-    readonly status: string,
+    private status: string,
     readonly date: Date,
   ) {}
 
@@ -21,6 +22,7 @@ export default class Ride {
     return new Ride(
       crypto.randomUUID(),
       passengerId,
+      "",
       new Segment(new Coord(fromLat, fromLong), new Coord(toLat, toLong)),
       "requested",
       new Date(),
@@ -30,6 +32,7 @@ export default class Ride {
   static restore(
     rideId: string,
     passengerId: string,
+    driverId: string,
     fromLat: number,
     fromLong: number,
     toLat: number,
@@ -40,10 +43,22 @@ export default class Ride {
     return new Ride(
       rideId,
       passengerId,
+      driverId,
       new Segment(new Coord(fromLat, fromLong), new Coord(toLat, toLong)),
       status,
       date,
     );
+  }
+
+  accept(driverId: string) {
+    if (this.status !== "requested") throw new Error("Invalid status!");
+    this.driverId = driverId;
+    this.status = "accepted";
+  }
+
+  start() {
+    if (this.status !== "accepted") throw new Error("Invalid status!");
+    this.status = "in_progress";
   }
 
   getFromLat() {
@@ -64,5 +79,9 @@ export default class Ride {
 
   getDistance() {
     return this.segment.getDistance();
+  }
+
+  getStatus() {
+    return this.status;
   }
 }
