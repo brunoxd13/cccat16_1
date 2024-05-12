@@ -1,7 +1,7 @@
 import crypto from "crypto";
-import Coord from "./Coord";
-import Segment from "./Segment";
-import RideStatus, { RideStatusFactory } from "./RideStatus";
+import Coord from "../vo/Coord";
+import Segment from "../vo/Segment";
+import RideStatus, { RideStatusFactory } from "../vo/RideStatus";
 
 export default class Ride {
   status: RideStatus;

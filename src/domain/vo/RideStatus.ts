@@ -1,4 +1,4 @@
-import Ride from "./Ride";
+import Ride from "../entity/Ride";
 
 export default abstract class RideStatus {
   abstract value: string;
