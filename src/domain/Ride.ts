@@ -1,16 +1,21 @@
 import crypto from "crypto";
 import Coord from "./Coord";
 import Segment from "./Segment";
+import RideStatus, { RideStatusFactory } from "./RideStatus";
 
 export default class Ride {
+  status: RideStatus;
+
   private constructor(
     readonly rideId: string,
     readonly passengerId: string,
     public driverId: string,
     private segment: Segment,
-    private status: string,
+    status: string,
     readonly date: Date,
-  ) {}
+  ) {
+    this.status = RideStatusFactory.create(this, status);
+  }
 
   static create(
     passengerId: string,
@@ -51,14 +56,12 @@ export default class Ride {
   }
 
   accept(driverId: string) {
-    if (this.status !== "requested") throw new Error("Invalid status!");
+    this.status.accept();
     this.driverId = driverId;
-    this.status = "accepted";
   }
 
   start() {
-    if (this.status !== "accepted") throw new Error("Invalid status!");
-    this.status = "in_progress";
+    this.status.start();
   }
 
   getFromLat() {
@@ -82,6 +85,6 @@ export default class Ride {
   }
 
   getStatus() {
-    return this.status;
+    return this.status.value;
   }
 }
