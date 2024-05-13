@@ -1,8 +1,8 @@
+import crypto from "crypto";
 import CarPlate from "../vo/CarPlate";
 import Cpf from "../vo/Cpf";
 import Email from "../vo/Email";
 import Name from "../vo/Name";
-import crypto from "crypto";
 
 export default class Account {
   private constructor(
@@ -12,7 +12,7 @@ export default class Account {
     private cpf: Cpf,
     private carPlate: CarPlate,
     readonly isPassenger: boolean,
-    readonly isDriver: boolean
+    readonly isDriver: boolean,
   ) {}
 
   static create(
@@ -21,7 +21,7 @@ export default class Account {
     cpf: string,
     carPlate: string,
     isPassenger: boolean,
-    isDriver: boolean
+    isDriver: boolean,
   ) {
     const accountId = crypto.randomUUID();
     return new Account(
@@ -31,7 +31,7 @@ export default class Account {
       new Cpf(cpf),
       new CarPlate(carPlate),
       isPassenger,
-      isDriver
+      isDriver,
     );
   }
 
@@ -42,7 +42,7 @@ export default class Account {
     cpf: string,
     carPlate: string,
     isPassenger: boolean,
-    isDriver: boolean
+    isDriver: boolean,
   ) {
     return new Account(
       accountId,
@@ -51,7 +51,7 @@ export default class Account {
       new Cpf(cpf),
       new CarPlate(carPlate),
       isPassenger,
-      isDriver
+      isDriver,
     );
   }
 
