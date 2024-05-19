@@ -13,6 +13,9 @@ export default class Ride {
     private segment: Segment,
     status: string,
     readonly date: Date,
+    public lastPosition: Coord,
+    public distance: number,
+    public fare: number,
   ) {
     this.status = RideStatusFactory.create(this, status);
   }
@@ -31,6 +34,9 @@ export default class Ride {
       new Segment(new Coord(fromLat, fromLong), new Coord(toLat, toLong)),
       "requested",
       new Date(),
+      new Coord(fromLat, fromLong),
+      0,
+      0,
     );
   }
 
@@ -44,6 +50,10 @@ export default class Ride {
     toLong: number,
     status: string,
     date: Date,
+    lastLat: number,
+    lastLong: number,
+    distance: number,
+    fare: number,
   ) {
     return new Ride(
       rideId,
@@ -52,6 +62,9 @@ export default class Ride {
       new Segment(new Coord(fromLat, fromLong), new Coord(toLat, toLong)),
       status,
       date,
+      new Coord(lastLat, lastLong),
+      distance,
+      fare,
     );
   }
 
@@ -62,6 +75,13 @@ export default class Ride {
 
   start() {
     this.status.start();
+  }
+
+  updatePosition(lat: number, long: number) {
+    const newPosition = new Coord(lat, long);
+    const distance = new Segment(this.lastPosition, newPosition).getDistance();
+    this.distance += distance;
+    this.lastPosition = newPosition;
   }
 
   getFromLat() {

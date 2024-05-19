@@ -29,6 +29,7 @@ export default class GetRide {
       passengerEmail: passanger?.getEmail(),
       driverName: driver?.getName(),
       driverEmail: driver?.getEmail(),
+      distance: ride.distance,
     };
   }
 }
@@ -49,4 +50,5 @@ type Output = {
   passengerEmail: string;
   driverName?: string;
   driverEmail?: string;
+  distance?: number;
 };

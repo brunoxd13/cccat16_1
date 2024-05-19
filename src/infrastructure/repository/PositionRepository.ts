@@ -1,11 +1,11 @@
 // interface adapter
 
-import pgp from "pg-promise";
 import Position from "../../domain/entity/Position";
 import DatabaseConnection from "../database/DatabaseConnection";
 
 export default interface PositionRepository {
   savePosition(position: Position): Promise<void>;
+  listPositionByRideId(rideId: string): Promise<Position[]>;
 }
 
 export class PositionRepositoryDatabase implements PositionRepository {
@@ -22,5 +22,26 @@ export class PositionRepositoryDatabase implements PositionRepository {
         position.date,
       ],
     );
+  }
+
+  async listPositionByRideId(rideId: string): Promise<Position[]> {
+    const positionData = await this.databaseConnection.query(
+      "select * from cccat16.position where ride_id = $1",
+      [rideId],
+    );
+    const positions = [];
+    for (const position of positionData) {
+      positions.push(
+        Position.restore(
+          position.position_id,
+          position.ride_id,
+          parseFloat(position.lat),
+          parseFloat(position.long),
+          position.date,
+        ),
+      );
+    }
+
+    return positions;
   }
 }
